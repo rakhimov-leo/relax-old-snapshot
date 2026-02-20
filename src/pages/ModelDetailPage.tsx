@@ -52,9 +52,9 @@ const CARRIER_OPTIONS: CarrierOption[] = [
 
 const COLOR_OPTIONS: ColorOption[] = [
   { id: 'c1', name: '블랙', hex: '#111827', soldOut: true },
-  { id: 'c2', name: '화이트', hex: '#f3f4f6', soldOut: true },
+  { id: 'c2', name: '화이트', hex: '#f3f4f6', soldOut: false },
   { id: 'c3', name: '라벤더', hex: '#e5e0ff', soldOut: true },
-  { id: 'c4', name: '그레이', hex: '#d1d5db', soldOut: true },
+  { id: 'c4', name: '그레이', hex: '#d1d5db', soldOut: false },
   { id: 'c5', name: '네이비', hex: '#0f172a', soldOut: false },
 ]
 const PLANS: Plan[] = [
@@ -178,10 +178,10 @@ export default function ModelDetailPage() {
   const model = getModelBySlug(slug || '')
   const [searchParams, setSearchParams] = useSearchParams()
 
-  const [carrier, setCarrier] = useState<string>('lgu')
+  const [carrier, setCarrier] = useState<string | null>(null)
   const [color, setColor] = useState<string | null>(null)
-  const [plan, setPlan] = useState<string>('super')
-  const [installment, setInstallment] = useState<string>('24')
+  const [plan, setPlan] = useState<string | null>(null)
+  const [installment, setInstallment] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState<string>('plan')
   const [modalStep, setModalStep] = useState<string | null>(null) // null | 'auth' | 'color'
   const [ownerType, setOwnerType] = useState<string | null>(null) // null | 'self' | 'family'
@@ -289,8 +289,7 @@ export default function ModelDetailPage() {
         <div className={styles.inner}>
           <Link to="/" className={styles.back}>← 셀프가입으로</Link>
 
-          {/* 상단: 왼쪽 이미지 + 오른쪽 상품정보 */}
-          <section className={styles.topSection}>
+          <section className={styles.mainSection}>
             <div className={styles.leftCol}>
               <div className={styles.carrierLogo}>U+</div>
               <div className={styles.imageWrap}>
@@ -308,46 +307,6 @@ export default function ModelDetailPage() {
                 <span>256GB</span>
                 <span className={styles.arrow}>▼</span>
               </div>
-              <div className={styles.priceRow}>
-                <span className={styles.priceOriginal}>1,155,000원</span>
-                <strong className={styles.priceSale}>115,000원</strong>
-              </div>
-              <div className={styles.infoCards}>
-                <div className={styles.infoCard}>
-                  <span className={styles.infoIcon}><IconSelfSignup /></span>
-                  <div>
-                    <p className={styles.infoTitle}>셀프가입 특가 상품</p>
-                    <p className={styles.infoText}>상담 없이 직접 가입하면 혜택이 더 커요.</p>
-                  </div>
-                </div>
-                <div className={styles.infoCard}>
-                  <span className={styles.infoIcon}><IconHourglass /></span>
-                  <div>
-                    <p className={styles.infoTitle}>재고소진 시 혜택이 달라질 수 있어요</p>
-                    <p className={styles.infoText}>통신사 온라인 신청서를 작성하면 혜택이 확정돼요.</p>
-                  </div>
-                </div>
-                <div className={styles.infoCard}>
-                  <span className={styles.infoIcon}><IconStore /></span>
-                  <div>
-                    <p className={styles.infoTitle}>내일은편하게 mobile</p>
-                    <p className={styles.infoText}>본 상품은 내일은편하게 mobile에서 직접 판매하는 상품입니다.</p>
-                  </div>
-                </div>
-              </div>
-              <button
-                type="button"
-                className={styles.btnApply}
-                onClick={() => goToStep('owner')}
-              >
-                신청하기
-              </button>
-            </div>
-          </section>
-
-          {/* 하단: 왼쪽 통신사 선택 + 오른쪽 요금 상세 */}
-          <section className={styles.bottomSection}>
-            <div className={styles.leftCol}>
               <h2 className={styles.sectionTitle}>이용할 통신사</h2>
               <div className={styles.carrierCards}>
                 {CARRIER_OPTIONS.map((c) => (
@@ -499,71 +458,10 @@ export default function ModelDetailPage() {
                 </div>
               )}
 
-            </div>
-            <div className={styles.rightCol}>
-              <h3 className={styles.summaryCardTitle}>{model.name}</h3>
-              <div className={styles.storageSelect}>
-                <span>256GB</span>
-                <span className={styles.arrow}>▼</span>
-              </div>
-              <div className={styles.summaryCard}>
-                <div className={styles.priceBlock}>
-                  <p className={styles.detailGroup}>휴대폰</p>
-                  <div className={styles.detailRow}>
-                    <span>할부원금</span>
-                    <span className={styles.detailValueBold}>5,090원</span>
-                  </div>
-                  <div className={styles.detailRowIndent}>
-                    <span>출고가</span>
-                    <span>1,155,000원</span>
-                  </div>
-                  <div className={styles.detailRowIndent}>
-                    <span>이통사지원금</span>
-                    <span className={styles.minus}>-500,000원</span>
-                  </div>
-                  <div className={styles.detailRowIndent}>
-                    <span>유통망지원금</span>
-                    <span className={styles.minus}>-540,000원</span>
-                  </div>
-                  <div className={styles.detailRow}>
-                    <span>단말기 월 할부금 <span className={styles.badge}>24개월</span></span>
-                    <span className={styles.detailValueBold}>4,790원</span>
-                  </div>
-                  <div className={styles.detailRowIndent}>
-                    <span>단말기 월 할부이자</span>
-                    <span>300원</span>
-                  </div>
-                </div>
-                <div className={styles.priceBlock}>
-                  <div className={styles.detailRowGroupHeader}>
-                    <p className={styles.detailGroup}>요금제</p>
-                    <span className={styles.detailValueBold}>117,200원</span>
-                  </div>
-                  <div className={styles.detailRow}>
-                    <span>5G 프리미어 슈퍼 <span className={styles.badge}>185일 유지</span></span>
-                    <span>115,000원</span>
-                  </div>
-                  <div className={styles.detailRow}>
-                    <span>부가서비스</span>
-                    <span>2,200원</span>
-                  </div>
-                  <div className={styles.detailRowIndent}>
-                    <span>벨링모아B</span>
-                    <span>2,200원</span>
-                  </div>
-                  <div className={styles.detailRowIndent}>
-                    <span>93일 유지</span>
-                    <span></span>
-                  </div>
-                </div>
-                <div className={styles.totalRow}>
-                  <span className={styles.totalLabel}>월 납부 예상 금액 VAT 포함</span>
-                  <span className={styles.totalValue}>122,290원</span>
-                </div>
-              </div>
               <button
                 type="button"
-                className={styles.btnApplyFull}
+                className={carrier && color && plan && installment ? styles.btnApplyReady : styles.btnApplyDisabled}
+                disabled={!carrier || !color || !plan || !installment}
                 onClick={() => goToStep('owner')}
               >
                 신청하기
