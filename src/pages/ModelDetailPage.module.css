@@ -382,14 +382,32 @@
 
 /* 할인 방법 */
 
-.discountCard {
-  padding: 14px 16px 14px 86px;
+.discountCard,
+.discountCardActive {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
   background: #fff;
   border: 1px solid #eef0f2;
   border-radius: 10px;
   width: 100%;
   box-sizing: border-box;
+  cursor: pointer;
   transition: border-color 0.2s, background 0.2s;
+}
+
+.discountCard input[type="radio"],
+.discountCardActive input[type="radio"] {
+  accent-color: #6366f1;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.discountCardActive {
+  border-color: #6366f1;
+  background: #f5f3ff;
 }
 
 .discountCard:hover {
@@ -397,12 +415,14 @@
   background: #f8f9fa;
 }
 
-.discountCard strong {
+.discountCard strong,
+.discountCardActive strong {
   color: #6366f1;
   font-size: 0.95rem;
 }
 
-.discountCard p {
+.discountCard p,
+.discountCardActive p {
   margin: 4px 0 0 0;
   font-size: 0.9rem;
   color: #555;
@@ -1378,22 +1398,33 @@
   .mainSection {
     grid-template-columns: 1fr;
     gap: 24px;
+    padding: 20px 16px;
   }
 
   .leftCol {
     position: static;
-  }
-
-  .leftCol {
     align-items: center;
+    width: 100%;
   }
 
   .imageWrap {
-    max-width: 220px;
+    max-width: 260px;
+    width: 100%;
+    aspect-ratio: 3/4;
+  }
+
+  .productImage {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
   }
 
   .carrierLogo {
     margin-bottom: 12px;
+  }
+
+  .rightCol {
+    width: 100%;
   }
 }
 

@@ -4,8 +4,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 48px 20px 56px;
+  padding: 0;
   overflow: hidden;
+  background: #1a1a1a;
 }
 
 .bg {
@@ -17,19 +18,18 @@
 .gradient {
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(135deg, rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.15)),
-    url('/images/hero-bg.png') center/cover no-repeat;
+  background: url('/images/hero-bg.png') center center / cover no-repeat;
+  background-color: #1a1a1a;
+}
+
+@media (min-width: 769px) {
+  .gradient {
+    background-size: contain;
+  }
 }
 
 .glow {
-  position: absolute;
-  top: -20%;
-  right: -10%;
-  width: 60%;
-  height: 80%;
-  background: radial-gradient(ellipse, rgba(99, 102, 241, 0.12) 0%, transparent 70%);
-  pointer-events: none;
+  display: none;
 }
 
 .content {

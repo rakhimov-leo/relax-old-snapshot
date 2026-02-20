@@ -180,6 +180,7 @@ export default function ModelDetailPage() {
 
   const [carrier, setCarrier] = useState<string | null>(null)
   const [color, setColor] = useState<string | null>(null)
+  const [discount, setDiscount] = useState<string | null>(null)
   const [plan, setPlan] = useState<string | null>(null)
   const [installment, setInstallment] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState<string>('plan')
@@ -352,14 +353,20 @@ export default function ModelDetailPage() {
 
               <h2 className={styles.sectionTitle}>할인 방법</h2>
               <div className={styles.discountCards}>
-                <div className={styles.discountCard}>
-                  <strong>이통사지원금</strong>
-                  <p>단말기 기기값을 할인받아요 (구 공시지원금)</p>
-                </div>
-                <div className={styles.discountCard}>
-                  <strong>선택약정</strong>
-                  <p>요금제에서 25% 할인 받아요</p>
-                </div>
+                <label className={discount === 'subsidy' ? styles.discountCardActive : styles.discountCard}>
+                  <input type="radio" name="discount" value="subsidy" checked={discount === 'subsidy'} onChange={() => setDiscount('subsidy')} />
+                  <div>
+                    <strong>이통사지원금</strong>
+                    <p>단말기 기기값을 할인받아요 (구 공시지원금)</p>
+                  </div>
+                </label>
+                <label className={discount === 'contract' ? styles.discountCardActive : styles.discountCard}>
+                  <input type="radio" name="discount" value="contract" checked={discount === 'contract'} onChange={() => setDiscount('contract')} />
+                  <div>
+                    <strong>선택약정</strong>
+                    <p>요금제에서 25% 할인 받아요</p>
+                  </div>
+                </label>
               </div>
 
               <h2 className={styles.sectionTitle}>요금제</h2>
@@ -460,8 +467,8 @@ export default function ModelDetailPage() {
 
               <button
                 type="button"
-                className={carrier && color && plan && installment ? styles.btnApplyReady : styles.btnApplyDisabled}
-                disabled={!carrier || !color || !plan || !installment}
+                className={carrier && color && discount && plan && installment ? styles.btnApplyReady : styles.btnApplyDisabled}
+                disabled={!carrier || !color || !discount || !plan || !installment}
                 onClick={() => goToStep('owner')}
               >
                 신청하기
