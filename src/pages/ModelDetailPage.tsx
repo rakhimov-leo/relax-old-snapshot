@@ -375,13 +375,15 @@ export default function ModelDetailPage() {
                   <label key={p.id} className={plan === p.id ? styles.planCardActive : styles.planCard}>
                     <input type="radio" name="plan" value={p.id} checked={plan === p.id} onChange={() => setPlan(p.id)} />
                     <div className={styles.planCardContent}>
-                      <strong>{p.name}</strong>
-                      <p>{p.data}</p>
-                      <p>{p.voice}</p>
-                      <p>{p.sub}</p>
-                      <a href="#plan-detail" className={styles.planLink}>요금제 상세안내</a>
-                      <div className={styles.planPriceRow}>
-                        <span>월 {p.price}원</span>
+                      <div className={styles.planCardLeft}>
+                        <strong>{p.name}</strong>
+                        <p>{p.data}</p>
+                        <p>{p.voice}</p>
+                        <p>{p.sub}</p>
+                      </div>
+                      <div className={styles.planCardRight}>
+                        <a href="#plan-detail" className={styles.planLink}>요금제 상세안내</a>
+                        <span className={styles.planPrice}>월 {p.price}원</span>
                         <span className={styles.planBenefit}>혜택 {p.benefit}</span>
                       </div>
                     </div>

@@ -463,7 +463,28 @@
 
 .planCardContent {
   flex: 1;
-  padding-left: 54px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.planCardLeft {
+  flex: 1;
+}
+
+.planCardRight {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.planPrice {
+  font-weight: 700;
+  color: #222;
+  font-size: 0.95rem;
 }
 
 .planCardContent strong {
@@ -501,19 +522,19 @@
 }
 
 /* 단말기 할부 */
-.bottomSection .installmentRow {
+.installmentRow {
   display: flex;
-  gap: 10px;
+  gap: 16px;
   margin-bottom: 24px;
 }
 
 .installBtn,
 .installBtnActive {
-  padding: 10px 20px;
+  padding: 8px 16px;
   border: 1px solid #d1d5db;
-  border-radius: 8px;
+  border-radius: 6px;
   background: #fff;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   cursor: pointer;
 }
 
@@ -534,6 +555,13 @@
   gap: 0;
   border-bottom: 1px solid #eef0f2;
   margin-bottom: 16px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.tabNav::-webkit-scrollbar {
+  display: none;
 }
 
 .tabNavBtn,
@@ -546,6 +574,17 @@
   cursor: pointer;
   border-bottom: 2px solid transparent;
   margin-bottom: -1px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  min-width: 40%;
+  text-align: center;
+}
+
+@media (min-width: 769px) {
+  .tabNavBtn,
+  .tabNavActive {
+    min-width: auto;
+  }
 }
 
 .tabNavBtn:hover {
