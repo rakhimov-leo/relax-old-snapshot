@@ -1,52 +1,185 @@
 .footer {
-  background: #0f172a;
-  color: #94a3b8;
   margin-top: 48px;
-  padding: 32px 20px 24px;
+  background: #3f4049;
+  color: #a8a8b3;
+  padding: 34px 30px 34px;
+  font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 .inner {
-  max-width: 1200px;
+  max-width: 1460px;
   margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 48px;
+  align-items: flex-start;
 }
 
-.company {
-  margin-bottom: 20px;
+.left {
+  min-width: 0;
+  flex: 1;
+  max-width: 860px;
 }
 
-.company strong {
-  color: #e2e8f0;
+.logo {
+  width: 168px;
+  max-width: 100%;
+  display: block;
+  margin-bottom: 16px;
+  opacity: 0.85;
+  filter: brightness(0) invert(1) contrast(0.82);
 }
 
 .company p {
-  margin: 6px 0;
-  font-size: 0.85rem;
-  line-height: 1.5;
+  margin: 0 0 6px;
+  font-size: 12px;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+  color: #acadb5;
+  white-space: nowrap;
 }
 
-.notice {
-  margin-top: 12px;
-  font-size: 0.8rem;
-  color: #64748b;
+.right {
+  width: 470px;
+  flex-shrink: 0;
+  text-align: right;
+  padding-top: 2px;
 }
 
-.links {
+.socials {
   display: flex;
-  gap: 16px;
-  margin-bottom: 16px;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 14px;
 }
 
-.links a {
-  color: #94a3b8;
+.social {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: 1px solid #63646d;
+  background: #575862;
+  color: #9699a4;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
   text-decoration: none;
-  font-size: 0.9rem;
+  transition: opacity 0.2s;
 }
 
-.links a:hover {
-  color: #c7d2fe;
+.social:hover {
+  opacity: 0.85;
 }
 
-.copyright {
-  font-size: 0.8rem;
-  color: #64748b;
+.socialIcon {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+.phoneRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.phoneLabel {
+  margin: 0;
+  color: #ff6464;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.phone {
+  margin: 0;
+  color: #ff6262;
+  font-size: 40px;
+  line-height: 0.98;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+.hours {
+  margin: 0;
+  color: #b6b8c0;
+  font-size: 18px;
+  line-height: 1.15;
+  font-weight: 500;
+}
+
+@media (max-width: 1024px) {
+  .inner {
+    gap: 28px;
+  }
+
+  .left {
+    max-width: none;
+  }
+
+  .company p {
+    font-size: 11px;
+    white-space: normal;
+  }
+
+  .right {
+    width: 360px;
+  }
+
+  .phoneLabel {
+    font-size: 16px;
+  }
+
+  .phone {
+    font-size: 34px;
+  }
+
+  .hours {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer {
+    padding: 24px 16px 26px;
+  }
+
+  .inner {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .right {
+    width: 100%;
+    text-align: left;
+  }
+
+  .socials {
+    justify-content: flex-start;
+    margin-bottom: 14px;
+  }
+
+  .phoneRow {
+    justify-content: flex-start;
+  }
+
+  .phoneLabel {
+    font-size: 15px;
+  }
+
+  .phone {
+    font-size: 30px;
+  }
+
+  .hours {
+    font-size: 16px;
+  }
+
+  .company p {
+    white-space: normal;
+  }
 }
