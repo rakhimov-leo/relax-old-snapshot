@@ -171,7 +171,7 @@ const NOTICE_STEPS: NoticeStep[] = [
   },
 ]
 
-type StepParam = 'owner' | 'identity' | 'notice' | 'agreement' | 'ars'
+type StepParam = 'owner' | 'notice' | 'agreement' | 'ars'
 
 export default function ModelDetailPage() {
   const { slug } = useParams<{ slug: string }>()
@@ -186,20 +186,13 @@ export default function ModelDetailPage() {
   const [activeTab, setActiveTab] = useState<string>('plan')
   const [modalStep, setModalStep] = useState<string | null>(null) // null | 'auth' | 'color'
   const [ownerType, setOwnerType] = useState<string | null>(null) // null | 'self' | 'family'
-  const [gender, setGender] = useState<string | null>(null) // null | 'male' | 'female'
-  const [birthYear, setBirthYear] = useState('')
-  const [birthMonth, setBirthMonth] = useState('')
-  const [birthDay, setBirthDay] = useState('')
-  const [phoneMid, setPhoneMid] = useState('')
-  const [phoneLast, setPhoneLast] = useState('')
 
-  const stepParam = searchParams.get('step') // null | 'owner' | 'identity' | 'notice' | 'agreement' | 'ars'
+  const stepParam = searchParams.get('step') // null | 'owner' | 'notice' | 'agreement' | 'ars'
   const wizardStep =
     stepParam === 'owner' ? 1 :
-    stepParam === 'identity' ? 2 :
-    stepParam === 'notice' ? 3 :
-    stepParam === 'agreement' ? 4 :
-    stepParam === 'ars' ? 5 : 0
+    stepParam === 'notice' ? 2 :
+    stepParam === 'agreement' ? 3 :
+    stepParam === 'ars' ? 4 : 0
 
   const goToStep = (step: StepParam | null) => {
     const next = new URLSearchParams(searchParams)
@@ -210,8 +203,6 @@ export default function ModelDetailPage() {
     }
     setSearchParams(next)
   }
-
-  const birthFull = birthYear.length === 4 && birthMonth.length === 2 && birthDay.length === 2
 
   const selectedColor = COLOR_OPTIONS.find((c) => c.id === color)
   const [showLoginModal, setShowLoginModal] = useState(false)
@@ -226,7 +217,7 @@ export default function ModelDetailPage() {
   const [showPrivacyTerms, setShowPrivacyTerms] = useState(false)
   const [arsId, setArsId] = useState<string | null>(null)
   const [arsCode, setArsCode] = useState('')
-  const [arsPhone, setArsPhone] = useState('010-8477-9503')
+  const [arsPhone, setArsPhone] = useState('1533-3759')
   const [arsTimer, setArsTimer] = useState(180)
   const [arsLoading, setArsLoading] = useState(false)
   const [arsError, setArsError] = useState('')
@@ -239,7 +230,7 @@ export default function ModelDetailPage() {
       const result = await apiGenerateArsCode('01084779503')
       setArsId(result.arsId)
       setArsCode(result.arsCode)
-      setArsPhone(result.arsPhone.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3'))
+      setArsPhone('1533-3759')
       setArsTimer(result.expiresInSeconds)
     } catch (err: unknown) {
       // Backend ulana olmasa, demo rejimda ishlaydi
@@ -264,7 +255,7 @@ export default function ModelDetailPage() {
   }, [])
 
   useEffect(() => {
-    if (wizardStep === 5) startArsTimer()
+    if (wizardStep === 4) startArsTimer()
     return () => { if (arsIntervalRef.current) clearInterval(arsIntervalRef.current) }
   }, [wizardStep, startArsTimer])
 
@@ -589,8 +580,6 @@ export default function ModelDetailPage() {
               <div className={styles.stepperItem}><span className={styles.stepperNum}>3</span></div>
               <div className={styles.stepperLine} />
               <div className={styles.stepperItem}><span className={styles.stepperNum}>4</span></div>
-              <div className={styles.stepperLine} />
-              <div className={styles.stepperItem}><span className={styles.stepperNum}>5</span></div>
             </div>
             <h2 className={styles.stepTitle}>본인명의 휴대폰을 개통하시나요?</h2>
             <div className={styles.stepOptions}>
@@ -615,7 +604,7 @@ export default function ModelDetailPage() {
               type="button"
               className={`${styles.stepNextBtn} ${ownerType ? styles.stepNextBtnActive : ''}`}
               disabled={!ownerType}
-              onClick={() => ownerType && goToStep('identity')}
+              onClick={() => ownerType && goToStep('notice')}
             >
               다음
             </button>
@@ -635,152 +624,6 @@ export default function ModelDetailPage() {
               <div className={styles.stepperItem}><span className={styles.stepperNum}>3</span></div>
               <div className={styles.stepperLine} />
               <div className={styles.stepperItem}><span className={styles.stepperNum}>4</span></div>
-              <div className={styles.stepperLine} />
-              <div className={styles.stepperItem}><span className={styles.stepperNum}>5</span></div>
-            </div>
-            <h2 className={styles.stepTitle}>개통할 본인의 정보를 입력해주세요.</h2>
-
-            <div className={styles.stepField}>
-              <p className={styles.stepFieldLabel}>성별</p>
-              <div className={styles.stepGenderRow}>
-                <button
-                  type="button"
-                  className={gender === 'male' ? styles.stepGenderActive : styles.stepGenderBtn}
-                  onClick={() => setGender('male')}
-                >
-                  남성
-                </button>
-                <button
-                  type="button"
-                  className={gender === 'female' ? styles.stepGenderActive : styles.stepGenderBtn}
-                  onClick={() => setGender('female')}
-                >
-                  여성
-                </button>
-              </div>
-            </div>
-
-            <div className={styles.stepField}>
-              <p className={styles.stepFieldLabel}>생년월일 8자리</p>
-              <div className={styles.stepBirthRow}>
-                <input
-                  type="text"
-                  placeholder="2000"
-                  className={`${styles.stepInput} ${styles.stepInputYear}`}
-                  maxLength={4}
-                  value={birthYear}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    const digits = e.target.value.replace(/\D/g, '').slice(0, 4)
-                    if (digits.length === 4) {
-                      const y = parseInt(digits, 10)
-                      if (y < 1900 || y > new Date().getFullYear()) return
-                    }
-                    setBirthYear(digits)
-                  }}
-                />
-                <span className={styles.stepBirthDash}>-</span>
-                <input
-                  type="text"
-                  placeholder="01"
-                  className={`${styles.stepInput} ${styles.stepInputMD}`}
-                  maxLength={2}
-                  value={birthMonth}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    const digits = e.target.value.replace(/\D/g, '').slice(0, 2)
-                    if (digits.length === 2) {
-                      const m = parseInt(digits, 10)
-                      if (m < 1 || m > 12) return
-                    }
-                    setBirthMonth(digits)
-                  }}
-                />
-                <span className={styles.stepBirthDash}>-</span>
-                <input
-                  type="text"
-                  placeholder="01"
-                  className={`${styles.stepInput} ${styles.stepInputMD}`}
-                  maxLength={2}
-                  value={birthDay}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    const digits = e.target.value.replace(/\D/g, '').slice(0, 2)
-                    if (digits.length === 2) {
-                      const d = parseInt(digits, 10)
-                      const y = parseInt(birthYear, 10) || 2000
-                      const m = parseInt(birthMonth, 10) || 1
-                      const maxDay = new Date(y, m, 0).getDate()
-                      if (d < 1 || d > maxDay) return
-                    }
-                    setBirthDay(digits)
-                  }}
-                />
-              </div>
-            </div>
-
-            <div className={styles.stepField}>
-              <p className={styles.stepFieldLabel}>휴대폰 번호 가운데 4자리</p>
-              <div className={styles.stepPhoneRow}>
-                <input
-                  type="text"
-                  value="010"
-                  readOnly
-                  className={`${styles.stepInput} ${styles.stepInputSmall} ${styles.stepInputReadonly}`}
-                />
-                <span className={styles.stepPhoneDash}>-</span>
-                <input
-                  type="text"
-                  placeholder="0000"
-                  className={`${styles.stepInput} ${styles.stepInputSmall}`}
-                  value={phoneMid}
-                  maxLength={4}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    const digits = e.target.value.replace(/\D/g, '').slice(0, 4)
-                    setPhoneMid(digits)
-                  }}
-                />
-                <span className={styles.stepPhoneDash}>-</span>
-                <input
-                  type="password"
-                  placeholder="****"
-                  className={`${styles.stepInput} ${styles.stepInputSmall} ${styles.stepInputReadonly}`}
-                  value="****"
-                  readOnly
-                />
-              </div>
-            </div>
-
-            {/** Next button faolligi: o'rtadagi 4 ta raqam to'liq bo'lsa */}
-            {(() => {
-              const onlyDigits = /^\d{4}$/.test(phoneMid)
-              const enabled = onlyDigits && birthFull && !!gender
-              return (
-                <button
-                  type="button"
-                  className={`${styles.stepNextBtn} ${enabled ? styles.stepNextBtnActive : ''}`}
-                  disabled={!enabled}
-                  onClick={() => enabled && goToStep('notice')}
-                >
-                  다음
-                </button>
-              )
-            })()}
-          </div>
-        </div>
-      )}
-
-      {wizardStep === 3 && (
-        <div className={styles.stepOverlay}>
-          <button type="button" className={styles.stepCloseBtn} onClick={() => goToStep(null)}>✕</button>
-          <div className={styles.stepCard}>
-            <div className={styles.stepper}>
-              <div className={styles.stepperItem}><span className={styles.stepperDone}>✓</span></div>
-              <div className={styles.stepperLine + ' ' + styles.stepperLineDone} />
-              <div className={styles.stepperItem}><span className={styles.stepperDone}>✓</span></div>
-              <div className={styles.stepperLine + ' ' + styles.stepperLineDone} />
-              <div className={styles.stepperItem}><span className={styles.stepperCurrent}>3</span></div>
-              <div className={styles.stepperLine} />
-              <div className={styles.stepperItem}><span className={styles.stepperNum}>4</span></div>
-              <div className={styles.stepperLine} />
-              <div className={styles.stepperItem}><span className={styles.stepperNum}>5</span></div>
             </div>
             <h2 className={styles.stepTitle}>상품 유의사항을 확인해주세요</h2>
 
@@ -831,7 +674,7 @@ export default function ModelDetailPage() {
         </div>
       )}
 
-      {wizardStep === 4 && (
+      {wizardStep === 3 && (
         <div className={styles.stepOverlay}>
           <button type="button" className={styles.stepCloseBtn} onClick={() => goToStep(null)}>✕</button>
           <div className={styles.stepCard}>
@@ -840,11 +683,9 @@ export default function ModelDetailPage() {
               <div className={styles.stepperLine + ' ' + styles.stepperLineDone} />
               <div className={styles.stepperItem}><span className={styles.stepperDone}>✓</span></div>
               <div className={styles.stepperLine + ' ' + styles.stepperLineDone} />
-              <div className={styles.stepperItem}><span className={styles.stepperDone}>✓</span></div>
-              <div className={styles.stepperLine + ' ' + styles.stepperLineDone} />
-              <div className={styles.stepperItem}><span className={styles.stepperCurrent}>4</span></div>
+              <div className={styles.stepperItem}><span className={styles.stepperCurrent}>3</span></div>
               <div className={styles.stepperLine} />
-              <div className={styles.stepperItem}><span className={styles.stepperNum}>5</span></div>
+              <div className={styles.stepperItem}><span className={styles.stepperNum}>4</span></div>
             </div>
             <h2 className={styles.stepTitle}>약관동의</h2>
 
@@ -959,7 +800,7 @@ export default function ModelDetailPage() {
         </div>
       )}
 
-      {wizardStep === 5 && (
+      {wizardStep === 4 && (
         <div className={styles.stepOverlay}>
           <button type="button" className={styles.stepCloseBtn} onClick={() => goToStep(null)}>✕</button>
           <div className={styles.stepCard}>
@@ -970,9 +811,7 @@ export default function ModelDetailPage() {
               <div className={styles.stepperLine + ' ' + styles.stepperLineDone} />
               <div className={styles.stepperItem}><span className={styles.stepperDone}>✓</span></div>
               <div className={styles.stepperLine + ' ' + styles.stepperLineDone} />
-              <div className={styles.stepperItem}><span className={styles.stepperDone}>✓</span></div>
-              <div className={styles.stepperLine + ' ' + styles.stepperLineDone} />
-              <div className={styles.stepperItem}><span className={styles.stepperCurrent}>5</span></div>
+              <div className={styles.stepperItem}><span className={styles.stepperCurrent}>4</span></div>
             </div>
             {arsTimer <= 0 && !arsLoading ? (
               <>
